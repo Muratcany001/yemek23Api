@@ -1,0 +1,6 @@
+@ApiYemek23_HostAddress = http://localhost:5291
+
+GET {{ApiYemek23_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

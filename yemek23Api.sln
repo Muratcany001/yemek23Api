@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiYemek23", "ApiYemek23\ApiYemek23.csproj", "{04C67E3F-0559-47FA-97DC-DE6A9C26A09E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04C67E3F-0559-47FA-97DC-DE6A9C26A09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C67E3F-0559-47FA-97DC-DE6A9C26A09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C67E3F-0559-47FA-97DC-DE6A9C26A09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C67E3F-0559-47FA-97DC-DE6A9C26A09E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB5252C0-046A-420D-AB4C-E1B446280E4A}
+	EndGlobalSection
+EndGlobal
