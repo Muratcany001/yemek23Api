@@ -6,6 +6,8 @@ namespace ApiYemek23.Entities.AppEntities
     {
         [Key]
         public int Restaurant_Id { get; set; }
+        [Key]
+        public string Restaurant_code { get; set; }
         [Required]
         public string Restaurant_Name { get; set; }
         [Required]

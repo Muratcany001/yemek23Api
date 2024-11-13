@@ -30,7 +30,7 @@ public class JsonHandler
                     string rating = business["rating"]?.ToString();
                     string latitude = business["coordinates"]?["latitude"]?.ToString();
                     string longitude = business["coordinates"]?["longitude"]?.ToString();
-                    string coordinates = $"{latitude}, {longitude}";
+                    string coordinates = string.Join(", ", latitude, longitude);
                     string address = string.Join(", ", business["location"]?["display_address"]?.ToObject<string[]>());
                     string phone = business["phone"]?.ToString();
 
@@ -38,7 +38,7 @@ public class JsonHandler
                     writer.WriteLine(formatted);
                 }
             }
-            Console.WriteLine("Veriler başarıyla 'formatted_data.txt' dosyasına yazıldı.");
+            Console.WriteLine("Veriler başarıyla 'formatted_data1.txt' dosyasına yazıldı.");
         }
         catch (Exception ex)
         {
