@@ -24,12 +24,17 @@ namespace ApiYemek23.Controllers
             return Ok(users);
 
         }
-        [HttpPost("Register")]
-        public ActionResult<User> Register(User user)
-        {
-            _userRepository.CreateUser(user);
-            return CreatedAtAction(nameof(Register), user);
-        }
+        //[HttpPost("Register")]
+        //public ActionResult<User> Register(User user)
+        //{
+
+        //    if (_userRepository.GetUserByMail(user.User_Email) != null)
+        //    {
+        //        return Conflict("Bu mail adresine kayıtlı bir kullanıcı zaten var.");
+        //    }
+        //    _userRepository.CreateUser(user);
+        //    return CreatedAtAction(nameof(Register), user);
+        //}
         [HttpPost("login")]
         public ActionResult<string> Login([FromBody] LoginModel loginModel)
         {
