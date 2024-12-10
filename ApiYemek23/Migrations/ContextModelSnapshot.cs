@@ -50,7 +50,7 @@ namespace ApiYemek23.Migrations
 
                     b.HasKey("Restaurant_Id");
 
-                    b.ToTable("Restaurants");
+                    b.ToTable("Restaurants", (string)null);
                 });
 
             modelBuilder.Entity("ApiYemek23.Entities.AppEntities.User", b =>
@@ -87,7 +87,7 @@ namespace ApiYemek23.Migrations
 
                     b.HasKey("User_Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 #pragma warning restore 612, 618
         }

@@ -10,10 +10,10 @@ namespace ApiYemek23.Entities
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
-        // Eğer model ayarlarını burada yapmak istiyorsanız
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-          // alarınızı buraya ekleyebilirsiniz
+          
         }
     }
 }

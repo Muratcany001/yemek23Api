@@ -17,9 +17,21 @@ namespace ApiYemek23.Concrete
             return _context.Restaurants.ToList();
         }
 
+        public Restaurant GetRestaurantByName(string name)
+        {
+            return _context.Restaurants.FirstOrDefault(c => c.Restaurant_Name == name);
+        }
+
         Restaurant IRestaurantRepository.GetAllRestaurant()
         {
             throw new NotImplementedException();
         }
+        public Restaurant AddRestaurant(Restaurant restaurant)
+        {
+             _context.Restaurants.Add(restaurant);
+            _context.SaveChanges();
+            return restaurant;
+        }
+        
     }
 }
