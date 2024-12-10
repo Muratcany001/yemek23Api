@@ -8,23 +8,23 @@ namespace ApiYemek23.Controllers
 {
     public class RestaurantController : ControllerBase
     {
-        private readonly IRestaurantRepository _repository;
+        private readonly IRestaurantRepository _Restaurantrepository;
 
-        public RestaurantController(IRestaurantRepository repository)
+        public RestaurantController(IRestaurantRepository Restaurantrepository)
         {
-            _repository = repository;
+            _Restaurantrepository = Restaurantrepository;
         }
         [HttpGet("Restaurant Get")]
         public ActionResult<IEnumerable<Restaurant>> GetAllRestaurant()
         {
-            var Restaurants = _repository.GetAllRestaurant();
+            var Restaurants = _Restaurantrepository.GetAllRestaurant();
             return Ok(Restaurants);
         }
 
         [HttpGet("get Restaurant by name")]
         public ActionResult<Restaurant> GetRestaurantByName(string name)
         {
-                var RestaurantByName = _repository.GetRestaurantByName(name);
+                var RestaurantByName = _Restaurantrepository.GetRestaurantByName(name);
             if (RestaurantByName == null)
             {
                 return NotFound();
@@ -35,9 +35,10 @@ namespace ApiYemek23.Controllers
         [HttpPost("Add restaurant")]
         public ActionResult<Restaurant> AddRestaurant(Restaurant restaurant)
         {
-            _repository.AddRestaurant(restaurant);
-            return CreatedAtAction(nameof(AddRestaurant), restaurant);
+            _Restaurantrepository.AddRestaurant(restaurant);
+            return CreatedAtAction(nameof(GetRestaurantByName), new { name = restaurant.Restaurant_Name }, restaurant);
         }
+
 
     }
 }

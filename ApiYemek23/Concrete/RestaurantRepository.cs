@@ -22,10 +22,6 @@ namespace ApiYemek23.Concrete
             return _context.Restaurants.FirstOrDefault(c => c.Restaurant_Name == name);
         }
 
-        Restaurant IRestaurantRepository.GetAllRestaurant()
-        {
-            throw new NotImplementedException();
-        }
         public Restaurant AddRestaurant(Restaurant restaurant)
         {
              _context.Restaurants.Add(restaurant);

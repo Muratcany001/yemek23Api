@@ -14,6 +14,7 @@ builder.Services.AddDbContext<Context>(options =>
 
 // Dependency Injection registration
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
