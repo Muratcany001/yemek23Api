@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace ApiYemek23.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace ApiYemek23.Controllers
             _userRepository.CreateUser(user);
             return CreatedAtAction(nameof(Register), user);
         }
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public ActionResult<string> Login([FromBody] LoginModel loginModel)
         {
             var existingUser = _userRepository.GetUserByMail(loginModel.mail);

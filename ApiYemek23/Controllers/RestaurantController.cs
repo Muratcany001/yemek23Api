@@ -6,6 +6,7 @@ using MongoDB.Driver;
 
 namespace ApiYemek23.Controllers
 {
+    [ApiController]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantRepository _Restaurantrepository;
@@ -14,14 +15,14 @@ namespace ApiYemek23.Controllers
         {
             _Restaurantrepository = Restaurantrepository;
         }
-        [HttpGet("Restaurant Get")]
+        [HttpGet("GetAllRestaurant")]
         public ActionResult<IEnumerable<Restaurant>> GetAllRestaurant()
         {
             var Restaurants = _Restaurantrepository.GetAllRestaurant();
             return Ok(Restaurants);
         }
 
-        [HttpGet("get Restaurant by name")]
+        [HttpGet("GetRestaurantByName")]
         public ActionResult<Restaurant> GetRestaurantByName(string name)
         {
                 var RestaurantByName = _Restaurantrepository.GetRestaurantByName(name);
@@ -32,7 +33,7 @@ namespace ApiYemek23.Controllers
                 return Ok(RestaurantByName);
 
         }
-        [HttpPost("Add restaurant")]
+        [HttpPost("AddRestaurant")]
         public ActionResult<Restaurant> AddRestaurant(Restaurant restaurant)
         {
             _Restaurantrepository.AddRestaurant(restaurant);
