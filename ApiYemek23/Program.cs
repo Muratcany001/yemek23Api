@@ -16,6 +16,17 @@ builder.Services.AddDbContext<Context>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200") // Angular frontend address
+               .AllowAnyMethod() // Allow any HTTP method
+               .AllowAnyHeader(); // Allow any header
+    });
+});
+
+
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,7 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
