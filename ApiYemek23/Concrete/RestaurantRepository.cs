@@ -1,6 +1,8 @@
 ﻿using ApiYemek23.Abstract;
 using ApiYemek23.Entities;
 using ApiYemek23.Entities.AppEntities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace ApiYemek23.Concrete
 {
@@ -16,6 +18,10 @@ namespace ApiYemek23.Concrete
         {
             return _context.Restaurants.ToList();
         }
+        public async Task<Restaurant> GetRestaurantById(int id)
+        {
+            return await _context.Restaurants.FirstOrDefaultAsync(c => c.Restaurant_Id == id);
+        }   
 
         public Restaurant GetRestaurantByName(string name)
         {

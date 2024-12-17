@@ -1,4 +1,5 @@
 ﻿using ApiYemek23.Abstract;
+using ApiYemek23.Entities;
 using ApiYemek23.Entities.AppEntities;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,11 @@ namespace ApiYemek23.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IRestaurantRepository _restaurantRepository;
+        public UserController(IUserRepository userRepository, IRestaurantRepository restaurantRepository)
         {
             _userRepository = userRepository;
+            _restaurantRepository = restaurantRepository;
         }
 
         [HttpGet("GetUserList")]
@@ -45,6 +48,62 @@ namespace ApiYemek23.Controllers
             }
             return Ok("Giriş başarılı!");
         }
+        [HttpPost("GetUserById/{User_Id}")]
+        public async Task<IActionResult> GetUserById(int id) {
+            var Users = await _userRepository.GetUserById(id);
+            return Ok(Users);
+        }
+        [HttpGet("GetFavoritesById/{User_Id}")]
+        public async Task<IActionResult> GetFavoritesById(int id)
+        {
+            try
+            {
+                var Restaurant_Ids = await _userRepository.GetFavoritesById(id);
+                if (Restaurant_Ids == null || Restaurant_Ids.Count == 0)
+                {
+                    return BadRequest("Favorilerde restoran bulunamadı");
+                }
+                var Restaurants = new List<Restaurant>();
+                foreach (var Restaurant_Id in Restaurant_Ids)
+                {
+                    var Restaurant = await _restaurantRepository.GetRestaurantById(Restaurant_Id);
+                    if (Restaurant != null)
+                    {
+                        Restaurants.Add(Restaurant);
+                    }
+                }
+
+                if (Restaurants.Count == 0)
+                {
+                    return NotFound("Favorilerde restoran bulunamadı");
+                }
+
+                return Ok(Restaurants);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("AddFavorite")]
+        public async Task<IActionResult> AddFavorite([FromBody] AddFavoriteRequest request)
+        {
+            try
+            {
+                var user = await _userRepository.AddFavoriteAsync(request.User_Id, request.Restaurant_Id);
+
+                return Ok(new
+                {
+                    Message = "Restorant favorilere eklendi",
+                    Favorites = user.FavoriteRestaurantIds
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         private bool VerifyPassword(string password, string storedPassword)
         {
             var parts = storedPassword.Split('.');
@@ -56,7 +115,7 @@ namespace ApiYemek23.Controllers
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 10000,
                 numBytesRequested: 32));
-            return hash == parts[1]; // Hash'leri karşılaştır
+            return hash == parts[1]; 
         }
         private string HashPassword(string password)
         {
@@ -71,7 +130,7 @@ namespace ApiYemek23.Controllers
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 10000,
                 numBytesRequested: 32));
-            return Convert.ToBase64String(salt) + "." + hashed; // Salt ile birleştirip döndür
+            return Convert.ToBase64String(salt) + "." + hashed;
         }
         
 

@@ -20,9 +20,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:4200") // Angular frontend address
-               .AllowAnyMethod() // Allow any HTTP method
-               .AllowAnyHeader(); // Allow any header
+        builder.WithOrigins("http://localhost:4200")
+               .AllowAnyMethod()
+               .AllowAnyHeader(); 
     });
 });
 

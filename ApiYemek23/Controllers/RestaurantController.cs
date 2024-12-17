@@ -33,6 +33,18 @@ namespace ApiYemek23.Controllers
                 return Ok(RestaurantByName);
 
         }
+        [HttpGet("GetRestaurantById/{id}")]
+        public async Task<IActionResult> GetRestaurantById(int id)
+        {
+            var RestaurantById = await _Restaurantrepository.GetRestaurantById(id);
+            
+            if (RestaurantById == null)
+            {
+                return NotFound("Restaurant not found");
+            }
+
+            return Ok(RestaurantById);
+        }
         [HttpPost("AddRestaurant")]
         public ActionResult<Restaurant> AddRestaurant(Restaurant restaurant)
         {
