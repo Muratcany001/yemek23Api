@@ -4,7 +4,9 @@ using ApiYemek23.Entities.AppEntities;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace ApiYemek23.Controllers
 {
@@ -46,7 +48,8 @@ namespace ApiYemek23.Controllers
             {
                 return Unauthorized("Kullanıcı adı veya şifre yanlış.");
             }
-            return Ok("Giriş başarılı!");
+            var token = GenerateToken(existingUser);
+            return Ok(new {token = token});
         }
         [HttpPost("GetUserById/{User_Id}")]
         public async Task<IActionResult> GetUserById(int id) {
@@ -132,7 +135,20 @@ namespace ApiYemek23.Controllers
                 numBytesRequested: 32));
             return Convert.ToBase64String(salt) + "." + hashed;
         }
-        
+        private string GenerateToken(User user)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: "your-issuer",
+                audience: "your-audience",
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
 
 
     }
