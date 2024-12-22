@@ -1,6 +1,7 @@
 ﻿using ApiYemek23.Abstract;
 using ApiYemek23.Concrete;
 using ApiYemek23.Entities.AppEntities;
+using ApiYemek23.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
@@ -10,22 +11,27 @@ namespace ApiYemek23.Controllers
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantRepository _Restaurantrepository;
+        private readonly RepositoryService _RepositoryService;
 
-        public RestaurantController(IRestaurantRepository Restaurantrepository)
+        public RestaurantController(IRestaurantRepository Restaurantrepository, RepositoryService repositoryService)
         {
             _Restaurantrepository = Restaurantrepository;
+            _RepositoryService = repositoryService;
         }
+
         [HttpGet("GetAllRestaurant")]
         public ActionResult<IEnumerable<Restaurant>> GetAllRestaurant()
         {
-            var Restaurants = _Restaurantrepository.GetAllRestaurant();
+            var restaurantRepository = _RepositoryService.GetRestaurantRepository();
+            var Restaurants = restaurantRepository.GetAllRestaurant();
             return Ok(Restaurants);
         }
 
         [HttpGet("GetRestaurantByName")]
         public ActionResult<Restaurant> GetRestaurantByName(string name)
         {
-                var RestaurantByName = _Restaurantrepository.GetRestaurantByName(name);
+            var restaurantRepository = _RepositoryService.GetRestaurantRepository();
+            var RestaurantByName = restaurantRepository.GetRestaurantByName(name);
             if (RestaurantByName == null)
             {
                 return NotFound();
@@ -36,7 +42,8 @@ namespace ApiYemek23.Controllers
         [HttpGet("GetRestaurantById/{id}")]
         public async Task<IActionResult> GetRestaurantById(int id)
         {
-            var RestaurantById = await _Restaurantrepository.GetRestaurantById(id);
+            var restaurantRepository = _RepositoryService.GetRestaurantRepository();
+            var RestaurantById = await restaurantRepository.GetRestaurantById(id);
             
             if (RestaurantById == null)
             {

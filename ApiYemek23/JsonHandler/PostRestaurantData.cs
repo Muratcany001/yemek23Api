@@ -23,7 +23,6 @@
 //                return;
 //            }
 
-//            Console.WriteLine("Dosya bulundu, satırlar okunuyor...");
 //            var lines = File.ReadAllLines(filePath);
 //            Console.WriteLine($"Toplam {lines.Length} satır bulundu.");
 

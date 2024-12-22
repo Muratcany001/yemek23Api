@@ -1,4 +1,5 @@
 ﻿using ApiYemek23.Abstract;
+using ApiYemek23.Concrete;
 using ApiYemek23.Entities;
 using ApiYemek23.Entities.AppEntities;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,14 @@ namespace ApiYemek23.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly INotificationService _notificationService;
         private readonly IUserRepository _userRepository;
         private readonly IRestaurantRepository _restaurantRepository;
         public UserController(IUserRepository userRepository, IRestaurantRepository restaurantRepository)
         {
             _userRepository = userRepository;
             _restaurantRepository = restaurantRepository;
+            _notificationService = NotificationRepository.GetInstance();
         }
 
         [HttpGet("GetUserList")]
@@ -39,7 +42,9 @@ namespace ApiYemek23.Controllers
             {
                 return Conflict("Bu mail adresine kayıtlı bir kullanıcı zaten var.");
             }
+
             _userRepository.CreateUser(user);
+            _notificationService.ShowRegisterationNotification(user.User_Email);
             return CreatedAtAction(nameof(Register), user);
         }
         [HttpPost("Login")]
@@ -51,6 +56,7 @@ namespace ApiYemek23.Controllers
                 return Unauthorized("Kullanıcı adı veya şifre yanlış.");
             }
             var token = GenerateToken(existingUser);
+            _notificationService.ShowLoginNotification(loginModel.mail);
             return Ok(new {token = token});
         }
         [HttpPost("GetUserById/{User_Id}")]
@@ -138,7 +144,7 @@ namespace ApiYemek23.Controllers
             return Convert.ToBase64String(salt) + "." + hashed;
         }
         [HttpGet("protected-endpoint")]
-        [Authorize] // Bu endpoint yalnızca giriş yapmış kullanıcılar için geçerli olacak
+        [Authorize] 
         public IActionResult GetProtectedData()
         {
             return Ok("Bu veriye yalnızca giriş yapmış kullanıcılar erişebilir.");

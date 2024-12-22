@@ -1,6 +1,8 @@
 using ApiYemek23.Abstract;
 using ApiYemek23.Concrete;
 using ApiYemek23.Entities;
+using ApiYemek23.Services;
+
 //using ApiYemek23.JsonHandler;  // PostRestaurantData sýnýfýnýn namespace'ini ekleyin
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +31,7 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+builder.Services.AddScoped<RepositoryService>();
 
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
