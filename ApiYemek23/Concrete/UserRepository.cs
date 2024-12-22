@@ -20,11 +20,17 @@ namespace ApiYemek23.Concrete
             _context = context;
         }
         public User CreateUser(User user) {
-
-            user.User_Password = HashPassword(user.User_Password);
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return user;
+            try
+            {
+                user.User_Password = HashPassword(user.User_Password);
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Kullanıcı kaydı sırasında bir hata oluştu",ex);
+            }
         }
         public List<User> GetUser()
         {

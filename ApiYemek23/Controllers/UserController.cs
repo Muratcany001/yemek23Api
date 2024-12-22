@@ -1,10 +1,12 @@
 ﻿using ApiYemek23.Abstract;
 using ApiYemek23.Entities;
 using ApiYemek23.Entities.AppEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -32,7 +34,7 @@ namespace ApiYemek23.Controllers
         [HttpPost("Register")]
         public ActionResult<User> Register(User user)
         {
-
+            user.User_Email = user.User_Email.Trim();
             if (_userRepository.GetUserByMail(user.User_Email) != null)
             {
                 return Conflict("Bu mail adresine kayıtlı bir kullanıcı zaten var.");
@@ -135,9 +137,15 @@ namespace ApiYemek23.Controllers
                 numBytesRequested: 32));
             return Convert.ToBase64String(salt) + "." + hashed;
         }
+        [HttpGet("protected-endpoint")]
+        [Authorize] // Bu endpoint yalnızca giriş yapmış kullanıcılar için geçerli olacak
+        public IActionResult GetProtectedData()
+        {
+            return Ok("Bu veriye yalnızca giriş yapmış kullanıcılar erişebilir.");
+        }
         private string GenerateToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-very-secret-key-12345678911121314151617181920212223242522627282930"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: "your-issuer",

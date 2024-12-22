@@ -21,8 +21,12 @@ namespace ApiYemek23.Concrete
         public async Task<Restaurant> GetRestaurantById(int id)
         {
             return await _context.Restaurants.FirstOrDefaultAsync(c => c.Restaurant_Id == id);
-        }   
-
+        }
+        public async Task AddAsync(Restaurant restaurant)
+        {
+            await _context.Restaurants.AddAsync(restaurant);  // Veritabanına ekle
+            await _context.SaveChangesAsync();  // Değişiklikleri kaydet
+        }
         public Restaurant GetRestaurantByName(string name)
         {
             return _context.Restaurants.FirstOrDefault(c => c.Restaurant_Name == name);
