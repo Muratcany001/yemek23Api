@@ -19,5 +19,6 @@ namespace ApiYemek23.Entities.AppEntities
         [Required]
         public int Restaurant_Rating {  get; set; }
 
+
     }
 }

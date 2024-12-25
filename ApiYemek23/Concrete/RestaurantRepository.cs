@@ -13,7 +13,7 @@ namespace ApiYemek23.Concrete
         {
             _context = context;
         }
-
+        
         public List<Restaurant> GetAllRestaurant()
         {
             return _context.Restaurants.ToList();
@@ -31,7 +31,13 @@ namespace ApiYemek23.Concrete
         {
             return _context.Restaurants.FirstOrDefault(c => c.Restaurant_Name == name);
         }
-
+        public Restaurant DeleteRestaurant(int restaurantid)
+        {
+            var restaurant = _context.Restaurants.Find(restaurantid);
+            _context.Restaurants.Remove(restaurant);
+            _context.SaveChanges();
+            return restaurant;
+        }
         public Restaurant AddRestaurant(Restaurant restaurant)
         {
              _context.Restaurants.Add(restaurant);

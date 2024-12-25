@@ -39,6 +39,12 @@ namespace ApiYemek23.Controllers
                 return Ok(RestaurantByName);
 
         }
+        [HttpDelete("Delete restaurant/{id} ")]
+        public ActionResult<Restaurant> DeleteRestaurantById(int id)
+        {
+            _Restaurantrepository.DeleteRestaurant(id);
+            return CreatedAtAction(nameof(DeleteRestaurantById), id);
+        }
         [HttpGet("GetRestaurantById/{id}")]
         public async Task<IActionResult> GetRestaurantById(int id)
         {

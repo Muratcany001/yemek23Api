@@ -9,5 +9,6 @@ namespace ApiYemek23.Abstract
         Restaurant AddRestaurant(Restaurant restaurant);
         Task<Restaurant> GetRestaurantById(int id);
         Task AddAsync(Restaurant restaurant);
+        Restaurant DeleteRestaurant(int id);
     }
 }
