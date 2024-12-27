@@ -9,17 +9,13 @@ namespace ApiYemek23.Entities
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(
-                    "Server=tcp:yemek23server.database.windows.net,1433;Initial Catalog=yemek23;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";",
-                    options => options.EnableRetryOnFailure());
-            }
         }
         public Context(DbContextOptions<Context> options)
       : base(options)
         {
         }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
 
@@ -233,4 +229,3 @@ namespace ApiYemek23.Entities
         }
     }
 }
-

@@ -12,6 +12,7 @@ namespace ApiYemek23.Entities.AppEntities
         public string User_Email { get; set; }
         [Required]
         public string User_Password { get; set; } 
+        public int UserBalance {  get; set; }
         public List<int> FavoriteRestaurantIds { get; set; } = new List<int>();
 
     }

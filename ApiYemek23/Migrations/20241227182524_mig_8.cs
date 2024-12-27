@@ -7,11 +7,48 @@
 namespace ApiYemek23.Migrations
 {
     /// <inheritdoc />
-    public partial class azure_3 : Migration
+    public partial class mig_8 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<decimal>(
+                name: "TotalAmount",
+                table: "Orders",
+                type: "decimal(18,2)",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Status",
+                table: "Orders",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    OrderDetailId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Restaurants",
                 columns: new[] { "Restaurant_Id", "Restaurant_Coordinates", "Restaurant_Location", "Restaurant_Name", "Restaurant_Phone_Number", "Restaurant_Rating", "Restaurant_code" },
@@ -38,11 +75,40 @@ namespace ApiYemek23.Migrations
                     { 19, "38.6767693, 39.2232513", "İzzet Paşa Mah., Mehmetçik Sok. No: 36 / A, 23000 Elazığ, Turkey", "Erhanlar Yöresel ev Yemekleri", "+904242373731", 0, "B5czbVFNScth6Bm1XzvuMw" },
                     { 20, "38.6675301, 39.1591606", "Cumhuriyet Mah. Malatya Cad., No: 26, 23000 Elazığ, Turkey", "Divan Baklava & Dondurma", "+904242477923", 0, "9uVc9itlSEbkifZ_FFE2yg" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Orders_Users_UserId",
+                table: "Orders",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "User_Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_Users_UserId",
+                table: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders");
+
             migrationBuilder.DeleteData(
                 table: "Restaurants",
                 keyColumn: "Restaurant_Id",
@@ -142,6 +208,18 @@ namespace ApiYemek23.Migrations
                 table: "Restaurants",
                 keyColumn: "Restaurant_Id",
                 keyValue: 20);
+
+            migrationBuilder.DropColumn(
+                name: "Status",
+                table: "Orders");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "TotalAmount",
+                table: "Orders",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)");
         }
     }
 }
