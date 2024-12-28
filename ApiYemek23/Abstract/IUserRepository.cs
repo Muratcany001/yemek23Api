@@ -12,6 +12,7 @@ namespace ApiYemek23.Abstract
         Task<User> AddFavoriteAsync(int User_Id, int Restaurant_Id);
 
         Task<List<int>> GetFavoritesById (int id);
+        void Logout (String token);
 
         
     }

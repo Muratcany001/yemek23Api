@@ -14,10 +14,23 @@ namespace ApiYemek23.Concrete
     public class UserRepository : IUserRepository
     {                               
         private readonly Context _context;
+        private readonly TokenBlacklist _tokenblacklist;
 
-        public UserRepository(Context context)
+        public UserRepository(Context context, TokenBlacklist tokenBlacklist)
         {
             _context = context;
+            _tokenBlacklist = tokenBlacklist;
+        }
+        private readonly TokenBlacklist _tokenBlacklist;
+
+        public void Logout(string token)
+        {
+            _tokenBlacklist.AddToBlacklist(token);
+        }
+
+        public bool IsTokenValid(string token)
+        {
+            return !_tokenBlacklist.IsTokenBlacklisted(token);
         }
         public User CreateUser(User user) {
             try

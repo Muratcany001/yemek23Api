@@ -5,6 +5,7 @@ using ApiYemek23.Entities.AppEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.ConstrainedExecution;
@@ -20,11 +21,26 @@ namespace ApiYemek23.Controllers
         private readonly INotificationService _notificationService;
         private readonly IUserRepository _userRepository;
         private readonly IRestaurantRepository _restaurantRepository;
-        public UserController(IUserRepository userRepository, IRestaurantRepository restaurantRepository)
+        public UserController(IUserRepository userRepository, IRestaurantRepository restaurantRepository, TokenBlacklist tokenBlacklist )
         {
             _userRepository = userRepository;
             _restaurantRepository = restaurantRepository;
             _notificationService = NotificationRepository.GetInstance();
+        }
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token bulunamadı.");
+            }
+
+            _userRepository.Logout(token);
+
+            return Ok(new { message = "Çıkış işlemi başarılı." });
         }
 
         [HttpGet("GetUserList")]
@@ -34,6 +50,7 @@ namespace ApiYemek23.Controllers
             return Ok(users);
 
         }
+
         [HttpPost("Register")]
         public ActionResult<User> Register(User user)
         {
