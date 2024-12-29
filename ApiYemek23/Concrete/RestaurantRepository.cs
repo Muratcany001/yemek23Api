@@ -22,6 +22,7 @@ namespace ApiYemek23.Concrete
         {
             return await _context.Restaurants.FirstOrDefaultAsync(c => c.Restaurant_Id == id);
         }
+
         public async Task AddAsync(Restaurant restaurant)
         {
             await _context.Restaurants.AddAsync(restaurant);  // Veritabanına ekle
@@ -40,10 +41,12 @@ namespace ApiYemek23.Concrete
         }
         public Restaurant AddRestaurant(Restaurant restaurant)
         {
-             _context.Restaurants.Add(restaurant);
+            _context.Restaurants.Add(restaurant);
             _context.SaveChanges();
-            return restaurant;
+            return restaurant; 
         }
-        
+
+
+
     }
 }

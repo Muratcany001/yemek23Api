@@ -27,7 +27,7 @@ namespace ApiYemek23.Controllers
             return Ok(Restaurants);
         }
 
-        [HttpGet("restaurants/{name}")]
+        [HttpGet("restaurants/name/{name}")]
         public ActionResult<Restaurant> GetRestaurantByName(string name)
         {
             var restaurantRepository = _RepositoryService.GetRestaurantRepository();
@@ -45,25 +45,32 @@ namespace ApiYemek23.Controllers
             _Restaurantrepository.DeleteRestaurant(id);
             return CreatedAtAction(nameof(DeleteRestaurantById), id);
         }
-        [HttpGet("restaurants/{id}")]
+        [HttpGet("restaurants/id/{id}")]
         public async Task<IActionResult> GetRestaurantById(int id)
         {
             var restaurantRepository = _RepositoryService.GetRestaurantRepository();
-            var RestaurantById = await restaurantRepository.GetRestaurantById(id);
-            
-            if (RestaurantById == null)
+
+            // Fetch the restaurant by ID using the service
+            var restaurantById = await restaurantRepository.GetRestaurantById(id);
+
+            if (restaurantById == null)
             {
-                return NotFound("Restaurant not found");
+                // Return a 404 if the restaurant doesn't exist
+                return NotFound(new { message = "Restaurant not found" });
             }
 
-            return Ok(RestaurantById);
+            // Return the restaurant with a 200 OK response
+            return Ok(restaurantById);
         }
-        [HttpPost("restaurants/{id}")]
+
+        [HttpPost("restaurants")]
         public ActionResult<Restaurant> AddRestaurant(Restaurant restaurant)
         {
-            _Restaurantrepository.AddRestaurant(restaurant);
-            return CreatedAtAction(nameof(GetRestaurantByName), new { name = restaurant.Restaurant_Name }, restaurant);
+            var addedRestaurant = _Restaurantrepository.AddRestaurant(restaurant);
+            return CreatedAtAction(nameof(GetRestaurantByName), new { name = addedRestaurant.Restaurant_Name }, addedRestaurant);
         }
+
+
 
 
     }
