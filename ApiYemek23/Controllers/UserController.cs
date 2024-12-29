@@ -50,6 +50,34 @@ namespace ApiYemek23.Controllers
             return Ok(users);
 
         }
+        [HttpGet("GetUserBalance/{id}")]
+        public async Task<IActionResult> GetUserBalance(int id)
+        {
+            try
+            {
+                var balance = await _userRepository.GetUserBalance(id);
+                return Ok(new { Balance = balance });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpPatch("UpdateUserBalance/{id}")]
+        public async Task<IActionResult> UpdateUserBalance(int id, [FromBody] decimal newBalance)
+        {
+            try
+            {
+                var updatedBalance = await _userRepository.UpdateUserBalance(id, newBalance);
+                return Ok(new { Message = "Bakiye güncellendi.", Balance = updatedBalance });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
 
         [HttpPost("Register")]
         public ActionResult<User> Register(User user)
@@ -160,6 +188,9 @@ namespace ApiYemek23.Controllers
                 numBytesRequested: 32));
             return Convert.ToBase64String(salt) + "." + hashed;
         }
+        
+
+
         [HttpGet("protected-endpoint")]
         [Authorize] 
         public IActionResult GetProtectedData()

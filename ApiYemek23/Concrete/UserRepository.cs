@@ -11,22 +11,48 @@ using System.Security.Cryptography;
 
 namespace ApiYemek23.Concrete
 {
-    public class UserRepository : IUserRepository
-    {                               
+    public class UserRepository: IUserRepository
+    {
         private readonly Context _context;
-        private readonly TokenBlacklist _tokenblacklist;
-
+        private readonly TokenBlacklist _tokenBlacklist;
         public UserRepository(Context context, TokenBlacklist tokenBlacklist)
         {
             _context = context;
             _tokenBlacklist = tokenBlacklist;
         }
-        private readonly TokenBlacklist _tokenBlacklist;
-
         public void Logout(string token)
         {
             _tokenBlacklist.AddToBlacklist(token);
         }
+        public async Task<Decimal> GetUserBalance(int id)
+        {
+            var balance = await _context.Users
+                .Where(u => u.User_Id == id)
+                .Select(u => u.UserBalance)
+                .FirstOrDefaultAsync();
+
+            return balance;
+        }
+        public async Task<decimal> UpdateUserBalance(int id, decimal newBalance)
+        {
+            // Kullanıcıyı ID'ye göre bul
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.User_Id == id);
+
+            if (user == null)
+            {
+                throw new Exception("Kullanıcı bulunamadı.");
+            }
+
+            // Kullanıcının bakiyesini güncelle
+            user.UserBalance = (int)newBalance;
+
+            // Veritabanında değişiklikleri kaydet
+            await _context.SaveChangesAsync();
+
+            // Güncellenmiş bakiyeyi döndür
+            return user.UserBalance;
+        }
+
 
         public bool IsTokenValid(string token)
         {

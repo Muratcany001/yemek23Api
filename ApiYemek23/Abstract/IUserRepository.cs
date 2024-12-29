@@ -10,6 +10,8 @@ namespace ApiYemek23.Abstract
         Task<User> GetUserById (int id);
         User UpdateUser (User user);
         Task<User> AddFavoriteAsync(int User_Id, int Restaurant_Id);
+        Task<Decimal> GetUserBalance(int id);
+        Task<Decimal> UpdateUserBalance(int id, decimal newBalance);
 
         Task<List<int>> GetFavoritesById (int id);
         void Logout (String token);
