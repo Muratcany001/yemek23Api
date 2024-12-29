@@ -1,12 +1,13 @@
 ﻿using ApiYemek23.Entities.AppEntities;
+using System.Threading.Tasks;
 
 namespace ApiYemek23.Abstract
 {
     public interface IOrderRepository
     {
-        Order AddOrder(Order order);
-        Order GetOrderById(int id);
-        Order UpdateOrder(Order order);
-        Order DeleteOrderById(int id);
+        Task<Order> AddOrderAsync(Order order);
+        Task<Order> GetOrderByIdAsync(int id);
+        Task<Order> UpdateOrderAsync(Order order);
+        Task<Order> DeleteOrderByIdAsync(int id);
     }
 }

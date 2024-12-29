@@ -20,7 +20,7 @@ builder.Services.AddDbContext<Context>(options =>
 // Dependency Injection kayýtlarý
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
-
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 // CORS politikasý
 builder.Services.AddCors(options =>
 {

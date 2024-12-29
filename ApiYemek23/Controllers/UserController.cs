@@ -43,14 +43,14 @@ namespace ApiYemek23.Controllers
             return Ok(new { message = "Çıkış işlemi başarılı." });
         }
 
-        [HttpGet("GetUserList")]
+        [HttpGet("users")]
         public ActionResult<IEnumerable  <User>> GetAllUser()
         {
             var users = _userRepository.GetUser();
             return Ok(users);
 
         }
-        [HttpGet("GetUserBalance/{id}")]
+        [HttpGet("users/{id}/balance")]
         public async Task<IActionResult> GetUserBalance(int id)
         {
             try
@@ -64,7 +64,7 @@ namespace ApiYemek23.Controllers
             }
         }
 
-        [HttpPatch("UpdateUserBalance/{id}")]
+        [HttpPatch("users/{id}/balance")]
         public async Task<IActionResult> UpdateUserBalance(int id, [FromBody] decimal newBalance)
         {
             try
@@ -79,7 +79,7 @@ namespace ApiYemek23.Controllers
         }
 
 
-        [HttpPost("Register")]
+        [HttpPost("users/register")]
         public ActionResult<User> Register(User user)
         {
             user.User_Email = user.User_Email.Trim();
@@ -92,7 +92,7 @@ namespace ApiYemek23.Controllers
             _notificationService.ShowRegisterationNotification(user.User_Email);
             return CreatedAtAction(nameof(Register), user);
         }
-        [HttpPost("Login")]
+        [HttpPost("users/login")]
         public ActionResult<string> Login([FromBody] LoginModel loginModel)
         {
             var existingUser = _userRepository.GetUserByMail(loginModel.mail);
@@ -104,12 +104,12 @@ namespace ApiYemek23.Controllers
             _notificationService.ShowLoginNotification(loginModel.mail);
             return Ok(new {token = token});
         }
-        [HttpPost("GetUserById/{User_Id}")]
+        [HttpPost("users/{id}/getUser")]
         public async Task<IActionResult> GetUserById(int id) {
             var Users = await _userRepository.GetUserById(id);
             return Ok(Users);
         }
-        [HttpGet("GetFavoritesById/{User_Id}")]
+        [HttpGet("users/{id}/favorites")]
         public async Task<IActionResult> GetFavoritesById(int id)
         {
             try
@@ -141,7 +141,7 @@ namespace ApiYemek23.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("AddFavorite")]
+        [HttpPost("users/{id}/favorites")]
         public async Task<IActionResult> AddFavorite([FromBody] AddFavoriteRequest request)
         {
             try

@@ -2,6 +2,7 @@
 using ApiYemek23.Entities;
 using ApiYemek23.Entities.AppEntities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ApiYemek23.Concrete
 {
@@ -13,31 +14,42 @@ namespace ApiYemek23.Concrete
         {
             _context = context;
         }
-        public Order AddOrder(Order order)
+
+        // Asenkron metot ile ekleme işlemi
+        public async Task<Order> AddOrderAsync(Order order)
         {
-            _context.Orders.Add(order);
-            _context.SaveChanges();
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
             return order;
         }
-        public Order GetOrderById(int id)
+
+        // Asenkron metot ile bir siparişi id ile alma
+        public async Task<Order> GetOrderByIdAsync(int id)
         {
-            return _context.Orders.FirstOrDefault(c => c.OrderId == id);
-            
+            return await _context.Orders.FirstOrDefaultAsync(c => c.OrderId == id);
         }
-        public Order UpdateOrder(Order order)
+
+        // Asenkron metot ile siparişi güncelleme
+        public async Task<Order> UpdateOrderAsync(Order order)
         {
             _context.Orders.Update(order);
-            _context.SaveChanges(true);
+            await _context.SaveChangesAsync();
             return order;
         }
-        public Order DeleteOrderById(int id)
+
+        // Asenkron metot ile siparişi silme
+        public async Task<Order> DeleteOrderByIdAsync(int id)
         {
-            var order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == id);
+
+            if (order == null)
+            {
+                return null;  // Eğer sipariş bulunamazsa null döndür
+            }
+
             _context.Orders.Remove(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return order;
         }
-
-
     }
 }

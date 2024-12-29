@@ -19,7 +19,7 @@ namespace ApiYemek23.Controllers
             _RepositoryService = repositoryService;
         }
 
-        [HttpGet("GetAllRestaurant")]
+        [HttpGet("restaurants")]
         public ActionResult<IEnumerable<Restaurant>> GetAllRestaurant()
         {
             var restaurantRepository = _RepositoryService.GetRestaurantRepository();
@@ -27,7 +27,7 @@ namespace ApiYemek23.Controllers
             return Ok(Restaurants);
         }
 
-        [HttpGet("GetRestaurantByName")]
+        [HttpGet("restaurants/{name}")]
         public ActionResult<Restaurant> GetRestaurantByName(string name)
         {
             var restaurantRepository = _RepositoryService.GetRestaurantRepository();
@@ -39,13 +39,13 @@ namespace ApiYemek23.Controllers
                 return Ok(RestaurantByName);
 
         }
-        [HttpDelete("Delete restaurant/{id} ")]
+        [HttpDelete("restaurants/{id}")]
         public ActionResult<Restaurant> DeleteRestaurantById(int id)
         {
             _Restaurantrepository.DeleteRestaurant(id);
             return CreatedAtAction(nameof(DeleteRestaurantById), id);
         }
-        [HttpGet("GetRestaurantById/{id}")]
+        [HttpGet("restaurants/{id}")]
         public async Task<IActionResult> GetRestaurantById(int id)
         {
             var restaurantRepository = _RepositoryService.GetRestaurantRepository();
@@ -58,7 +58,7 @@ namespace ApiYemek23.Controllers
 
             return Ok(RestaurantById);
         }
-        [HttpPost("AddRestaurant")]
+        [HttpPost("restaurants/{id}")]
         public ActionResult<Restaurant> AddRestaurant(Restaurant restaurant)
         {
             _Restaurantrepository.AddRestaurant(restaurant);
